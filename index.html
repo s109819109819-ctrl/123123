@@ -67,6 +67,17 @@
                 </div>
 
                 <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">聯絡電話</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-phone text-gray-400"></i>
+                        </div>
+                        <input type="tel" name="phone" id="phone" 
+                            class="pl-12 w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400 bg-white shadow-sm" placeholder="0912-345-678">
+                    </div>
+                </div>
+
+                <div>
                     <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">訊息內容</label>
                     <div class="relative">
                         <div class="absolute top-4 left-0 pl-4 flex items-center pointer-events-none">
@@ -94,7 +105,9 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycby4S9VRSshuI_xFEkPlH2WfXTQTrOpeYTNHmYIUGrKqnisBeGJyXxRervXwfy2lVMMzQw/exec';
+        // 【已自動幫你更新成最新的網址】
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwXgHjNfxSP2Wh551iDvoXhmlbRC3FksngviVTImNxIm1o7uKfEeq8RPe0L6ZGkeTzXgA/exec';
+        
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
@@ -103,23 +116,28 @@
 
         form.addEventListener('submit', e => {
             e.preventDefault();
+            // 鎖定按鈕
             submitBtn.disabled = true;
             btnText.textContent = '正在發送...';
             loadingIcon.classList.remove('hidden');
             submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
             statusMessage.classList.add('hidden');
 
+            // 發送資料
             fetch(scriptURL, { method: 'POST', body: new FormData(form) })
             .then(response => {
+                // 成功
                 statusMessage.textContent = "✅ 訊息已成功發送！我會盡快回覆您。";
                 statusMessage.className = "text-center p-4 rounded-xl bg-green-50 text-green-800 block shadow-sm border border-green-100";
-                form.reset();
+                form.reset(); // 清空表單
             })
             .catch(error => {
+                // 失敗
                 statusMessage.textContent = "❌ 發送失敗，請稍後再試，或檢查您的網路連線。";
                 statusMessage.className = "text-center p-4 rounded-xl bg-red-50 text-red-800 block shadow-sm border border-red-100";
             })
             .finally(() => {
+                // 恢復按鈕
                 submitBtn.disabled = false;
                 btnText.textContent = '發送訊息';
                 loadingIcon.classList.add('hidden');
@@ -129,5 +147,4 @@
         });
     </script>
 </body>
-
 </html>
